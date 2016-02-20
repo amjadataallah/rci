@@ -15,6 +15,26 @@ class User extends Model implements AuthenticatableContract,
                                     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+    
+    public $rules = [
+            'username' => 'required|min:6|max:45',
+            'password' => 'required|confirmed|min:6|max:20',
+            'mobile' => 'required|digits_between:9,13',
+            'email' => 'required|email|unique:users,email',
+            'date_of_birth' => 'required|date'
+    ];
+    
+    /**
+     * Validation Rules that applies when in-place edeting
+     *
+     */
+    
+    public static $editabel_rules = [
+            'username' => 'min:6|max:45',
+            'mobile' => 'digits_between:9,13',
+            'email' => 'email|unique:users,email_address',
+            'date_of_birth' => 'date|before:today'
+    ];
 
     /**
      * The database table used by the model.
@@ -28,7 +48,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['username', 'email', 'password', 'mobile'];
 
     /**
      * The attributes excluded from the model's JSON form.
